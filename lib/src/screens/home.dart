@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:ibm_ai_chat/src/theme/theme.dart';
 import 'package:ibm_ai_chat/src/widgets/chat_box.dart';
@@ -22,10 +23,8 @@ class Home extends StatelessWidget {
         title: Row(
           spacing: 12,
           children: [
-            CircleAvatar(
-              child: Icon(LucideIcons.botMessageSquare, color: Colors.white),
-            ),
-            Text("AI Assistant", style: TextStyle(color: Colors.white)),
+            SvgPicture.asset("assets/ibm_granite.svg", width: 32, height: 32),
+            Text("IBM Granite Chat", style: TextStyle(color: Colors.white)),
           ],
         ),
       ),
@@ -37,26 +36,31 @@ class Home extends StatelessWidget {
           mainAxisSize: MainAxisSize.min,
           children: [
             Expanded(
-              child: Container(
+              child: SizedBox(
                 width: mediaQueryWidth,
-                child: ListView.builder(
-                  padding: EdgeInsets.all(16),
-                  itemCount: chatMessages.length,
-                  itemBuilder: (context, index) {
-                    final message = chatMessages[index];
-                    return Padding(
-                      padding: EdgeInsets.only(bottom: 16),
-                      child: Row(
-                        mainAxisAlignment: message.isAi
-                            ? MainAxisAlignment.start
-                            : MainAxisAlignment.end,
-                        children: [
-                          ChatBox(isAi: message.isAi, content: message.content),
-                        ],
-                      ),
-                    );
-                  },
-                ),
+                child: chatMessages.isNotEmpty
+                    ? ListView.builder(
+                        padding: EdgeInsets.all(16),
+                        itemCount: chatMessages.length,
+                        itemBuilder: (context, index) {
+                          final message = chatMessages[index];
+                          return Padding(
+                            padding: EdgeInsets.only(bottom: 16),
+                            child: Row(
+                              mainAxisAlignment: message.isAi
+                                  ? MainAxisAlignment.start
+                                  : MainAxisAlignment.end,
+                              children: [
+                                ChatBox(
+                                  isAi: message.isAi,
+                                  content: message.content,
+                                ),
+                              ],
+                            ),
+                          );
+                        },
+                      )
+                    : Center(child: Text("Start chat with IBM Granite model!")),
               ),
             ),
             Container(
@@ -74,7 +78,7 @@ class Home extends StatelessWidget {
                 children: [
                   MyTextField(
                     textController: TextEditingController(),
-                    hintText: "Type your message...",
+                    hintText: "Ask anything...",
                   ),
                   Container(
                     decoration: BoxDecoration(

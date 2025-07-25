@@ -16,6 +16,7 @@ class ChatBox extends StatelessWidget {
 
     return Flexible(
       child: isAi
+          //chat box ai
           ? Container(
               constraints: BoxConstraints(maxWidth: mediaQueryWidth * 0.7),
               padding: EdgeInsets.symmetric(vertical: 12, horizontal: 16),
@@ -26,32 +27,41 @@ class ChatBox extends StatelessWidget {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.start,
-                spacing: 16,
+                spacing: 5,
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   Row(
-                    mainAxisSize: MainAxisSize.min,
-                    spacing: 8,
+                    mainAxisSize: MainAxisSize.max,
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Container(
-                        padding: EdgeInsets.all(8),
-                        decoration: BoxDecoration(
-                          color: appTheme.primaryColor,
-                          borderRadius: BorderRadius.circular(100),
-                        ),
-
-                        child: Icon(
-                          LucideIcons.botMessageSquare,
-                          color: Colors.white,
-                          size: 20,
-                        ),
+                      Row(
+                        mainAxisSize: MainAxisSize.min,
+                        spacing: 8,
+                        children: [
+                          Container(
+                            padding: EdgeInsets.all(8),
+                            decoration: BoxDecoration(
+                              color: appTheme.primaryColor,
+                              borderRadius: BorderRadius.circular(100),
+                            ),
+                            child: Icon(
+                              LucideIcons.botMessageSquare,
+                              color: Colors.white,
+                              size: 20,
+                            ),
+                          ),
+                          Text(
+                            "IBM Granite AI",
+                            style: TextStyle(
+                              fontSize: 14,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ],
                       ),
-                      Text(
-                        "IMB Granite AI",
-                        style: TextStyle(
-                          fontSize: 14,
-                          fontWeight: FontWeight.bold,
-                        ),
+                      IconButton(
+                        onPressed: () {},
+                        icon: Icon(LucideIcons.copy),
                       ),
                     ],
                   ),
@@ -59,6 +69,7 @@ class ChatBox extends StatelessWidget {
                 ],
               ),
             )
+          //chat box user
           : Container(
               constraints: BoxConstraints(maxWidth: mediaQueryWidth * 0.7),
               padding: EdgeInsets.symmetric(vertical: 12, horizontal: 16),
