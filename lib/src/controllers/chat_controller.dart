@@ -151,7 +151,6 @@ class ChatController extends GetxController {
               );
               messages[aiMsgIndex] = updated;
               _saveMessageToStorage(updated);
-              print(updated.content);
             }
           });
     } catch (e) {
