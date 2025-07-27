@@ -1,16 +1,51 @@
-# ibm_ai_chat
+# IBM AI Chat
 
-A new Flutter project.
+IBM AI Chat is a simple Flutter chat application that leverages IBM Granite-3.3-8b-instruct (via Replicate API) to provide real-time, streaming AI chat experiences. The app features Material Design, persistent chat history, and a user-friendly interface.
+
+## Features
+
+- Real-time AI chat with streaming/polling updates
+- Material 2 UI with left/right chat bubble alignment
+- Copy-to-clipboard for AI responses
+- Persistent chat history using Hive
+- Secure API key management with `.env`
 
 ## Getting Started
 
-This project is a starting point for a Flutter application.
+1. **Clone the repository:**
+   ```sh
+   git clone https://github.com/yourusername/ibm_ai_chat.git
+   cd ibm_ai_chat
+   ```
+2. **Install dependencies:**
+   ```sh
+   flutter pub get
+   ```
+3. **Set up environment variables:**
+   - Copy `.env.example` to `.env` and add your Replicate API key:
+     ```env
+     REPLICATE_API_TOKEN=your_replicate_api_token
+     ```
+4. **Run the app:**
+   ```sh
+   flutter run
+   ```
 
-A few resources to get you started if this is your first Flutter project:
+## Project Structure
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+- `lib/` — Main Flutter source code
+  - `src/controllers/` — GetX controllers (chat logic)
+  - `src/models/` — Data models (chat message)
+  - `src/screens/` — UI screens
+  - `src/services/` — API and backend services
+  - `src/widgets/` — Reusable widgets (chat box, text field)
+- `assets/` — SVG and other static assets
+- `android/`, `ios/` — Platform-specific code
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+## API & AI Model
+
+This app uses the [Replicate API](https://replicate.com/) to access IBM Granite-3.3-8b-instruct models for chat completion. All requests are securely handled and streamed for real-time UI updates.
+
+## License
+
+MIT License. See [LICENSE](LICENSE) for details.
