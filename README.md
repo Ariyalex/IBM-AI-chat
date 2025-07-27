@@ -2,6 +2,8 @@
 
 IBM AI Chat is a simple Flutter chat application that leverages IBM Granite-3.3-8b-instruct (via Replicate API) to provide real-time, streaming AI chat experiences. The app features Material Design, persistent chat history, and a user-friendly interface.
 
+Download the application [here](https://github.com/Ariyalex/IBM-AI-chat/releases/tag/V1.0)
+
 ## Features
 
 - Real-time AI chat with streaming/polling updates
