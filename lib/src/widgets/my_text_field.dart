@@ -16,7 +16,6 @@ class MyTextField extends StatelessWidget {
   Widget build(BuildContext context) {
     return Flexible(
       child: SizedBox(
-        height: 50,
         width: double.infinity,
         child: TextField(
           keyboardType: TextInputType.text,

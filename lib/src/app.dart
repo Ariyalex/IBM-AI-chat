@@ -12,8 +12,7 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'IBM AI Chat',
       theme: AppTheme.light,
-      themeMode: ThemeMode.light,
-      home: const Home(),
+      home: Home(),
     );
   }
 }

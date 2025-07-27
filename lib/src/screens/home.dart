@@ -7,41 +7,26 @@ import 'package:ibm_ai_chat/src/widgets/chat_box.dart';
 import 'package:ibm_ai_chat/src/widgets/my_text_field.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
 
-class Home extends StatefulWidget {
+class Home extends StatelessWidget {
   const Home({super.key});
 
   @override
-  State<Home> createState() => _HomeState();
-}
-
-class _HomeState extends State<Home> {
-  final chatController = Get.put(ChatController());
-  final ScrollController scrollController = ScrollController();
-
-  @override
-  void initState() {
-    super.initState();
-    // Scroll to bottom when messages change
-    ever(chatController.messages, (_) => _scrollToBottom());
-  }
-
-  void _scrollToBottom() {
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      if (scrollController.hasClients) {
-        scrollController.animateTo(
-          scrollController.position.maxScrollExtent,
-          duration: Duration(milliseconds: 300),
-          curve: Curves.easeOut,
-        );
-      }
-    });
-  }
-
-  @override
   Widget build(BuildContext context) {
-    final mediaQueryWidth = Get.width;
-    final mediaQueryHeight = Get.height;
+    final chatController = Get.find<ChatController>();
+    final ScrollController scrollController = ScrollController();
     final appTheme = AppTheme.light;
+
+    void scrollToBottom() {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        if (scrollController.hasClients) {
+          scrollController.animateTo(
+            scrollController.position.maxScrollExtent,
+            duration: Duration(milliseconds: 300),
+            curve: Curves.easeOut,
+          );
+        }
+      });
+    }
 
     return Scaffold(
       appBar: AppBar(
@@ -98,55 +83,46 @@ class _HomeState extends State<Home> {
           ),
         ],
       ),
-      body: Container(
-        margin: EdgeInsets.only(bottom: 10),
-        width: mediaQueryWidth,
-        height: mediaQueryHeight,
+      body: SafeArea(
         child: Column(
-          mainAxisSize: MainAxisSize.min,
           children: [
             Expanded(
               child: Obx(() {
-                // Always scroll to bottom after build if messages change
-                WidgetsBinding.instance.addPostFrameCallback(
-                  (_) => _scrollToBottom(),
-                );
-                return SizedBox(
-                  width: mediaQueryWidth,
-                  child: chatController.messages.isNotEmpty
-                      ? ListView.builder(
-                          controller: scrollController,
-                          padding: EdgeInsets.all(16),
-                          itemCount: chatController.messages.length,
-                          itemBuilder: (context, index) {
-                            final message = chatController.messages[index];
-                            return Padding(
-                              padding: EdgeInsets.only(bottom: 16),
-                              child: Row(
-                                mainAxisAlignment: message.isAi
-                                    ? MainAxisAlignment.start
-                                    : MainAxisAlignment.end,
-                                children: [
-                                  ChatBox(
-                                    isAi: message.isAi,
-                                    content: message.content,
-                                    partialContent: message.partialContent,
-                                    isLoading: message.isLoading,
-                                  ),
-                                ],
-                              ),
-                            );
-                          },
-                        )
-                      : Center(
-                          child: Text("Start chat with IBM Granite model!"),
-                        ),
-                );
+                WidgetsBinding.instance.addPostFrameCallback((_) {
+                  if (scrollController.hasClients &&
+                      chatController.messages.isNotEmpty) {
+                    scrollToBottom();
+                  }
+                });
+                return chatController.messages.isNotEmpty
+                    ? ListView.builder(
+                        controller: scrollController,
+                        padding: EdgeInsets.all(16),
+                        itemCount: chatController.messages.length,
+                        itemBuilder: (context, index) {
+                          final message = chatController.messages[index];
+                          return Padding(
+                            padding: EdgeInsets.only(bottom: 16),
+                            child: Row(
+                              mainAxisAlignment: message.isAi
+                                  ? MainAxisAlignment.start
+                                  : MainAxisAlignment.end,
+                              children: [
+                                ChatBox(
+                                  isAi: message.isAi,
+                                  content: message.content,
+                                  partialContent: message.partialContent,
+                                  isLoading: message.isLoading,
+                                ),
+                              ],
+                            ),
+                          );
+                        },
+                      )
+                    : Center(child: Text("Start chat with IBM Granite model!"));
               }),
             ),
             Container(
-              height: 100,
-              width: mediaQueryWidth,
               decoration: BoxDecoration(
                 border: Border(
                   top: BorderSide(color: Color(0xffE5E7EB), width: 1),
@@ -157,9 +133,11 @@ class _HomeState extends State<Home> {
                 mainAxisSize: MainAxisSize.min,
                 spacing: 12,
                 children: [
-                  MyTextField(
-                    textController: chatController.messageController,
-                    hintText: "Ask anything...",
+                  Expanded(
+                    child: MyTextField(
+                      textController: chatController.messageController,
+                      hintText: "Ask anything...",
+                    ),
                   ),
                   Obx(
                     () => Container(
