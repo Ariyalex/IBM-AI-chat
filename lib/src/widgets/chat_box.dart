@@ -96,7 +96,7 @@ class _ChatBoxState extends State<ChatBox> {
                             'Copied',
                             'Response copied to clipboard',
                             snackPosition: SnackPosition.BOTTOM,
-                            backgroundColor: Colors.blue.withOpacity(0.8),
+                            backgroundColor: Colors.blue.withValues(alpha: 0.8),
                             colorText: Colors.white,
                             duration: Duration(seconds: 2),
                           );
@@ -106,23 +106,37 @@ class _ChatBoxState extends State<ChatBox> {
                     ],
                   ),
                   widget.isLoading
-                      ? Row(
-                          children: [
-                            SizedBox(
-                              width: 16,
-                              height: 16,
-                              child: CircularProgressIndicator(
-                                strokeWidth: 2,
-                                valueColor: AlwaysStoppedAnimation<Color>(
-                                  appTheme.primaryColor,
+                      ? SizedBox(
+                          width: double.infinity,
+                          child: Column(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              Text(
+                                displayContent,
+                                softWrap: true,
+                                textAlign: TextAlign.left,
+                              ),
+                              SizedBox(width: 8),
+                              Center(
+                                child: SizedBox(
+                                  width: 16,
+                                  height: 16,
+                                  child: CircularProgressIndicator(
+                                    strokeWidth: 2,
+                                    valueColor: AlwaysStoppedAnimation<Color>(
+                                      appTheme.primaryColor,
+                                    ),
+                                  ),
                                 ),
                               ),
-                            ),
-                            SizedBox(width: 8),
-                            Expanded(child: Text(displayContent)),
-                          ],
+                            ],
+                          ),
                         )
-                      : Text(displayContent),
+                      : Text(
+                          displayContent,
+                          softWrap: true,
+                          textAlign: TextAlign.left,
+                        ),
                 ],
               ),
             )

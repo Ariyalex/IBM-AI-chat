@@ -55,24 +55,43 @@ class _HomeState extends State<Home> {
         actions: [
           IconButton(
             onPressed: () async {
-              try {
-                await chatController.clearChat();
-                Get.snackbar(
-                  'Success',
-                  'Chat cleared successfully',
-                  snackPosition: SnackPosition.BOTTOM,
-                  backgroundColor: Colors.green.withOpacity(0.8),
-                  colorText: Colors.white,
-                );
-              } catch (e) {
-                Get.snackbar(
-                  'Error',
-                  'Failed to clear chat: $e',
-                  snackPosition: SnackPosition.BOTTOM,
-                  backgroundColor: Colors.red.withOpacity(0.8),
-                  colorText: Colors.white,
-                );
-              }
+              Get.defaultDialog(
+                title: "Hapus semua chat",
+                content: const Text("Yakin hapus semua riwayat chat?"),
+                cancel: TextButton(
+                  onPressed: () {
+                    Get.back();
+                  },
+                  child: const Text("Tidak"),
+                ),
+                confirm: FilledButton(
+                  onPressed: () async {
+                    Get.back();
+
+                    try {
+                      await chatController.clearChat();
+                      Get.snackbar(
+                        'Success',
+                        'Chat cleared successfully',
+                        snackPosition: SnackPosition.TOP,
+                        backgroundColor: Colors.green.withValues(alpha: 0.8),
+                        colorText: Colors.white,
+                      );
+                      Get.back();
+                    } catch (e) {
+                      Get.back();
+                      Get.snackbar(
+                        'Error',
+                        'Failed to clear chat: $e',
+                        snackPosition: SnackPosition.TOP,
+                        backgroundColor: Colors.red.withValues(alpha: 0.8),
+                        colorText: Colors.white,
+                      );
+                    }
+                  },
+                  child: const Text("Ya"),
+                ),
+              );
             },
             icon: Icon(LucideIcons.trash2, color: Colors.white),
             tooltip: 'Clear Chat',
@@ -111,6 +130,8 @@ class _HomeState extends State<Home> {
                                   ChatBox(
                                     isAi: message.isAi,
                                     content: message.content,
+                                    partialContent: message.partialContent,
+                                    isLoading: message.isLoading,
                                   ),
                                 ],
                               ),
@@ -159,8 +180,8 @@ class _HomeState extends State<Home> {
                                     'Error',
                                     e.toString(),
                                     snackPosition: SnackPosition.BOTTOM,
-                                    backgroundColor: Colors.red.withOpacity(
-                                      0.8,
+                                    backgroundColor: Colors.red.withValues(
+                                      alpha: 0.8,
                                     ),
                                     colorText: Colors.white,
                                   );

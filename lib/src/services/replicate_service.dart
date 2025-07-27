@@ -37,20 +37,16 @@ class ReplicateService {
       body: jsonEncode(requestBody),
     );
 
-    print('[Replicate] First response: ${response.body}');
-
     if (response.statusCode == 201) {
       final json = jsonDecode(response.body);
       final output = json['output'];
       final predictionId = json['id'];
       if (output != null) {
         if (output is List) {
-          final filtered = output.where(
-            (e) => (e?.toString().trim().isNotEmpty ?? false),
-          );
-          return _cleanOutput(filtered.join(""));
+          // Gabungkan token tanpa menghilangkan spasi/newline di tengah token
+          return output.map((e) => e?.toString() ?? '').join();
         } else {
-          return _cleanOutput(output?.toString() ?? "Tidak ada output.");
+          return output?.toString() ?? "Tidak ada output.";
         }
       } else {
         // polling jika output masih null
@@ -69,16 +65,12 @@ class ReplicateService {
       "https://api.replicate.com/v1/predictions/$predictionId",
     );
 
-    int counter = 0;
     String lastPartial = '';
     while (true) {
       final poolRespnse = await http.get(
         poolUrl,
         headers: {'Authorization': 'Bearer $_apiToken'},
       );
-
-      print('[Replicate] Pool #$counter response: ${poolRespnse.body}');
-      counter++;
 
       final json = jsonDecode(poolRespnse.body);
       final status = json['status'];
@@ -88,12 +80,9 @@ class ReplicateService {
       if (onPartial != null && output != null) {
         String partial = '';
         if (output is List) {
-          final filtered = output.where(
-            (e) => (e?.toString().trim().isNotEmpty ?? false),
-          );
-          partial = _cleanOutput(filtered.join(""));
+          partial = output.map((e) => e?.toString() ?? '').join();
         } else {
-          partial = _cleanOutput(output?.toString() ?? "");
+          partial = output?.toString() ?? "";
         }
         if (partial != lastPartial && partial.isNotEmpty) {
           lastPartial = partial;
@@ -103,12 +92,9 @@ class ReplicateService {
 
       if (status == 'succeeded' && output != null) {
         if (output is List) {
-          final filtered = output.where(
-            (e) => (e?.toString().trim().isNotEmpty ?? false),
-          );
-          return _cleanOutput(filtered.join(""));
+          return output.map((e) => e?.toString() ?? '').join();
         } else {
-          return _cleanOutput(output?.toString() ?? "Tidak ada output.");
+          return output?.toString() ?? "Tidak ada output.";
         }
       } else if (status == 'failed') {
         throw Exception("Prediksi gagal diproses.");
@@ -116,10 +102,5 @@ class ReplicateService {
 
       await Future.delayed(Duration(seconds: 1));
     }
-  }
-
-  String _cleanOutput(String output) {
-    // Implementasi pembersihan output jika diperlukan
-    return output;
   }
 }

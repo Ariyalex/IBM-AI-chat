@@ -36,7 +36,6 @@ class ChatController extends GetxController {
     try {
       _chatBox = await Hive.openBox<ChatMessage>('chatMessages');
       _loadMessagesFromStorage();
-      print(messages.length);
     } catch (e) {
       print('Error initializing Hive box: $e');
     }
@@ -152,6 +151,7 @@ class ChatController extends GetxController {
               );
               messages[aiMsgIndex] = updated;
               _saveMessageToStorage(updated);
+              print(updated.content);
             }
           });
     } catch (e) {
@@ -200,7 +200,7 @@ class ChatController extends GetxController {
         'Success',
         'Chat cleared successfully',
         snackPosition: SnackPosition.BOTTOM,
-        backgroundColor: Colors.green.withOpacity(0.8),
+        backgroundColor: Colors.green.withValues(alpha: 0.8),
         colorText: Colors.white,
         duration: Duration(seconds: 2),
       );
