@@ -12,6 +12,17 @@ Download the application [here](https://github.com/Ariyalex/IBM-AI-chat/releases
 - Persistent chat history using Hive
 - Secure API key management with `.env`
 
+## Technology Stack
+
+- **Flutter** — UI toolkit for building natively compiled applications
+- **Dart** — Programming language for Flutter
+- **GetX** — State management and dependency injection
+- **Hive** — Lightweight & fast key-value database for local storage
+- **Replicate API** — For accessing IBM Granite-3.3-8b-instruct AI model
+- **flutter_dotenv** — For environment variable management
+- **flutter_svg** — For SVG asset rendering
+
+
 ## Getting Started
 
 1. **Clone the repository:**
@@ -47,6 +58,7 @@ Download the application [here](https://github.com/Ariyalex/IBM-AI-chat/releases
 ## API & AI Model
 
 This app uses the [Replicate API](https://replicate.com/) to access IBM Granite-3.3-8b-instruct models for chat completion. All requests are securely handled and streamed for real-time UI updates.
+
 
 ## License
 
